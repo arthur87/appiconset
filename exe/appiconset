@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+
+require "appiconset"
+require 'json'
+require 'optparse'
+require 'fileutils'
+
+options = {}
+
+option_parser = OptionParser.new
+option_parser.version = 1.0
+option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
+option_parser.on('-x', '--xcode <version>', '') { |v| options[:xcode] = v }
+option_parser.on('-p', '--platform <platform>', '') { |v| options[:platform] = v }
+option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
+option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
+
+option_parser.parse!(ARGV)
+
+if options.has_key?(:output)
+  output = options[:output]
+else
+  output = Dir::home + "/AppIcon.appiconset"
+end
+
+if ARGV.length == 0 || !File.exist?(ARGV[0])
+  STDERR.puts "No such file."
+  exit
+else
+  input = ARGV[0]
+end
+
+if options.has_key?(:xcode)
+  xcode = options[:xcode]
+else
+  xcode = "0"
+end
+
+if options.has_key?(:platform)
+  platform = options[:platform]
+else
+  platform = "ios"
+end
+
+def get_xcode_contents(xcode, platform)
+  if platform == "mac"
+    contents = [
+      [16, 1, 'mac'],
+      [16, 2, 'mac'],
+      [32, 1, 'mac'],
+      [32, 2, 'mac'],
+      [128, 1, 'mac'],
+      [128, 2, 'mac'],
+      [256, 1, 'mac'],
+      [256, 2, 'mac'],
+      [512, 1, 'mac'],
+      [512, 2, 'mac']
+    ]
+  elsif xcode == "8.3.3" and platform == "ios"
+    contents = [
+      [20, 2, 'iphone'],
+      [20, 3, 'iphone'],
+      [29, 2, 'iphone'],
+      [29, 3, 'iphone'],
+      [40, 2, 'iphone'],
+      [40, 3, 'iphone'],
+      [60, 2, 'iphone'],
+      [60, 3, 'iphone'],
+      [20, 1, 'ipad'],
+      [20, 2, 'ipad'],
+      [29, 1, 'ipad'],
+      [29, 2, 'ipad'],
+      [40, 1, 'ipad'],
+      [40, 2, 'ipad'],
+      [76, 1, 'ipad'],
+      [76, 2, 'ipad'],
+      [83.5, 2, 'ipad'],
+    ]
+  else
+    # xcode9.1 and ios
+    contents = [
+      [20, 2, 'iphone'],
+      [20, 3, 'iphone'],
+      [29, 2, 'iphone'],
+      [29, 3, 'iphone'],
+      [40, 2, 'iphone'],
+      [40, 3, 'iphone'],
+      [60, 2, 'iphone'],
+      [60, 3, 'iphone'],
+      [20, 1, 'ipad'],
+      [20, 2, 'ipad'],
+      [29, 1, 'ipad'],
+      [29, 2, 'ipad'],
+      [40, 1, 'ipad'],
+      [40, 2, 'ipad'],
+      [76, 1, 'ipad'],
+      [76, 2, 'ipad'],
+      [83.5, 2, 'ipad'],
+      [1024, 1, 'ios-marketing']
+    ]
+  end
+
+  return contents
+end
+
+contents = get_xcode_contents(xcode, platform)
+FileUtils.mkdir_p(output) unless FileTest.exist?(output)
+
+images = []
+contents.each do |c|
+  size = c[0].to_s + "x" + c[0].to_s
+  idiom = c[2].to_s
+  filename = "Icon-" + c[0].to_s + "@" + c[1].to_s + "x.png"
+  scale = c[1].to_s + "x"
+
+  images << {
+    size: size,
+    idiom: idiom,
+    filename: filename,
+    scale: scale
+  }
+
+  command = sprintf("sips -Z %d %s --out %s/%s", c[0].to_f * c[1].to_f, input, output, filename)
+  system(command)
+end
+
+appiconset = {
+  images: images,
+  info: {
+    version: 1,
+    author: "xcode"
+  }
+}
+
+File.write(output + "/Contents.json", JSON.pretty_generate(appiconset))
