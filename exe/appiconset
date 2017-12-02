@@ -4,14 +4,15 @@ require "appiconset"
 require 'json'
 require 'optparse'
 require 'fileutils'
+require 'fastimage'
 
 options = {}
 
 option_parser = OptionParser.new
 option_parser.version = 1.0
 option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
-option_parser.on('-x', '--xcode <version>', '') { |v| options[:xcode] = v }
-option_parser.on('-p', '--platform <platform>', '') { |v| options[:platform] = v }
+option_parser.on('-x', '--xcode <version>', 'set xcode version; 8.3.3, 9.1') { |v| options[:xcode] = v }
+option_parser.on('-p', '--platform <platform>', 'set platform; ios, mac, univarsal') { |v| options[:platform] = v }
 option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
 option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
 
@@ -24,7 +25,7 @@ else
 end
 
 if ARGV.length == 0 || !File.exist?(ARGV[0])
-  STDERR.puts "No such file."
+  STDERR.puts "no input file"
   exit
 else
   input = ARGV[0]
@@ -42,8 +43,14 @@ else
   platform = "ios"
 end
 
-def get_xcode_contents(xcode, platform)
-  if platform == "mac"
+def get_xcode_contents(xcode, platform, size)
+  if platform == "univarsal"
+    contents = [
+      [size[0] / 3, 3, 'univarsal'],
+      [size[0] / 3, 2, 'univarsal'],
+      [size[0] / 3, 1, 'univarsal']
+    ]
+  elsif platform == "mac"
     contents = [
       [16, 1, 'mac'],
       [16, 2, 'mac'],
@@ -103,15 +110,15 @@ def get_xcode_contents(xcode, platform)
   return contents
 end
 
-contents = get_xcode_contents(xcode, platform)
 FileUtils.mkdir_p(output) unless FileTest.exist?(output)
-
 images = []
-contents.each do |c|
+
+get_xcode_contents(xcode, platform, FastImage.size(input)).each do |c|
   size = c[0].to_s + "x" + c[0].to_s
   idiom = c[2].to_s
   filename = "Icon-" + c[0].to_s + "@" + c[1].to_s + "x.png"
   scale = c[1].to_s + "x"
+  real_size = c[0].to_f * c[1].to_f
 
   images << {
     size: size,
@@ -120,7 +127,7 @@ contents.each do |c|
     scale: scale
   }
 
-  command = sprintf("sips -Z %d %s --out %s/%s", c[0].to_f * c[1].to_f, input, output, filename)
+  command = sprintf("sips -Z %d %s --out %s/%s ", real_size, input, output, filename)
   system(command)
 end
 
