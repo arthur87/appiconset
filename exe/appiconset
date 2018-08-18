@@ -9,10 +9,10 @@ require 'fastimage'
 options = {}
 
 option_parser = OptionParser.new
-option_parser.version = 1.0
+option_parser.version = Appiconset::VERSION
 option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
-option_parser.on('-x', '--xcode <version>', 'set xcode version; 8.3.3, 9.1') { |v| options[:xcode] = v }
-option_parser.on('-p', '--platform <platform>', 'set platform; ios, mac, univarsal') { |v| options[:platform] = v }
+option_parser.on('-x', '--xcode <version>', 'Set xcode version; 8.3.3, 9.1') { |v| options[:xcode] = v }
+option_parser.on('-p', '--platform <platform>', 'Set platform; ios, mac, univarsal, watchos') { |v| options[:platform] = v }
 option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
 option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
 
@@ -62,6 +62,18 @@ def get_xcode_contents(xcode, platform, size)
       [256, 2, 'mac'],
       [512, 1, 'mac'],
       [512, 2, 'mac']
+    ]
+  elsif platform == "watchos"
+    contents = [
+      [24, 2, 'watch', 'notificationCenter', '38mm'],
+      [27.5, 2, 'watch', 'notificationCenter', '42mm'],
+      [29, 2, 'watch', 'companionSettings'],
+      [29, 3, 'watch', 'companionSettings'],
+      [40, 2, 'watch', 'appLauncher', '38mm'],
+      [44, 2, 'watch', 'longLook', '42mm'],
+      [86, 2, 'watch', 'quickLook', '38mm'],
+      [98, 2, 'watch', 'quickLook', '42mm'],
+      [1024, 1, 'watch-marketing']
     ]
   elsif xcode == "8.3.3" and platform == "ios"
     contents = [
@@ -114,18 +126,31 @@ FileUtils.mkdir_p(output) unless FileTest.exist?(output)
 images = []
 
 get_xcode_contents(xcode, platform, FastImage.size(input)).each do |c|
+  # size, scale, idiom, role(watchOS), subtype(watchOS)
+
   size = c[0].to_s + "x" + c[0].to_s
   idiom = c[2].to_s
   filename = "Icon-" + c[0].to_s + "@" + c[1].to_s + "x.png"
   scale = c[1].to_s + "x"
   real_size = c[0].to_f * c[1].to_f
 
-  images << {
+  entry = {
     size: size,
     idiom: idiom,
     filename: filename,
     scale: scale
   }
+
+  if !c[3].nil?
+    entry.store("role", c[3])
+  end
+
+  if !c[4].nil?
+    entry.store("subtype", c[4])
+  end
+
+
+  images << entry
 
   command = sprintf("sips -Z %d %s --out %s/%s ", real_size, input, output, filename)
   system(command)

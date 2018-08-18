@@ -1,39 +1,46 @@
 # Appiconset
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/appiconset`. To experiment with that code, run `bin/console` for an interactive prompt.
+1024px x 1024pxの画像からmacOSアプリやiOSアプリで必要になるアプリアイコンを書き出すRubyスクリプトです。
 
-TODO: Delete this and the text above, and describe your gem
+以下の環境で動作確認をしています。  
+* macOS High Sierra(10.13.1)
 
-## Installation
+以下のプラットフォームのアイコン作成をサポートしています。
+* iOS
+* macOS
+* Univarsal
+* watchOS
 
-Add this line to your application's Gemfile:
 
-```ruby
-gem 'appiconset'
+# インストール
+
+appiconsetは以下の方法でインストールできます。
+
+```
+$ gem install specific_install
+$ gem specific_install -l 'git://github.com/arthur87/appiconset.git'
 ```
 
-And then execute:
+# 使い方
 
-    $ bundle
+ヘルプは、以下の方法で表示できます。
 
-Or install it yourself as:
+```
+$ appiconset -h
+```
 
-    $ gem install appiconset
 
-## Usage
+1024px x 1024px の画像からアプリアイコンを作成します。
 
-TODO: Write usage instructions here
+```
+$ appiconset icon.jpg
+$ cd ./AppIcon.appiconset
+$ ls
+Contents.json    Icon-20@3x.png   Icon-40@1x.png   Icon-60@3x.png
+Icon-1024@1x.png Icon-29@1x.png   Icon-40@2x.png   Icon-76@1x.png
+Icon-20@1x.png   Icon-29@2x.png   Icon-40@3x.png   Icon-76@2x.png
+Icon-20@2x.png   Icon-29@3x.png   Icon-60@2x.png   Icon-83.5@2x.png
+```
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment. Run `bundle exec appiconset` to use the code located in this directory, ignoring other installed copies of this gem.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/appiconset/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Contents.jsonと複数のpngファイルが作成されます。  
+これらのファイルをXcodeプロジェクトのAppIcon.appiconsetにコピーします。
