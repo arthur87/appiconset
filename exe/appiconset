@@ -1,18 +1,16 @@
 #!/usr/bin/env ruby
 
-require "appiconset"
+require 'appiconset'
 require 'json'
 require 'optparse'
 require 'fileutils'
 require 'fastimage'
 
-options = {}
 
+options = {}
 option_parser = OptionParser.new
 option_parser.version = Appiconset::VERSION
 option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
-option_parser.on('-x', '--xcode <version>', 'Set xcode version; 8.3.3, 9.1') { |v| options[:xcode] = v }
-option_parser.on('-p', '--platform <platform>', 'Set platform; ios, mac, univarsal, watchos') { |v| options[:platform] = v }
 option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
 option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
 
@@ -21,7 +19,7 @@ option_parser.parse!(ARGV)
 if options.has_key?(:output)
   output = options[:output]
 else
-  output = Dir::home + "/AppIcon.appiconset"
+  output = Dir::home + "/appiconset-generated/"
 end
 
 if ARGV.length == 0 || !File.exist?(ARGV[0])
@@ -31,137 +29,35 @@ else
   input = ARGV[0]
 end
 
-if options.has_key?(:xcode)
-  xcode = options[:xcode]
-else
-  xcode = "0"
-end
-
-if options.has_key?(:platform)
-  platform = options[:platform]
-else
-  platform = "ios"
-end
-
-def get_xcode_contents(xcode, platform, size)
-  if platform == "univarsal"
-    contents = [
-      [size[0] / 3, 3, 'univarsal'],
-      [size[0] / 3, 2, 'univarsal'],
-      [size[0] / 3, 1, 'univarsal']
-    ]
-  elsif platform == "mac"
-    contents = [
-      [16, 1, 'mac'],
-      [16, 2, 'mac'],
-      [32, 1, 'mac'],
-      [32, 2, 'mac'],
-      [128, 1, 'mac'],
-      [128, 2, 'mac'],
-      [256, 1, 'mac'],
-      [256, 2, 'mac'],
-      [512, 1, 'mac'],
-      [512, 2, 'mac']
-    ]
-  elsif platform == "watchos"
-    contents = [
-      [24, 2, 'watch', 'notificationCenter', '38mm'],
-      [27.5, 2, 'watch', 'notificationCenter', '42mm'],
-      [29, 2, 'watch', 'companionSettings'],
-      [29, 3, 'watch', 'companionSettings'],
-      [40, 2, 'watch', 'appLauncher', '38mm'],
-      [44, 2, 'watch', 'longLook', '42mm'],
-      [86, 2, 'watch', 'quickLook', '38mm'],
-      [98, 2, 'watch', 'quickLook', '42mm'],
-      [1024, 1, 'watch-marketing']
-    ]
-  elsif xcode == "8.3.3" and platform == "ios"
-    contents = [
-      [20, 2, 'iphone'],
-      [20, 3, 'iphone'],
-      [29, 2, 'iphone'],
-      [29, 3, 'iphone'],
-      [40, 2, 'iphone'],
-      [40, 3, 'iphone'],
-      [60, 2, 'iphone'],
-      [60, 3, 'iphone'],
-      [20, 1, 'ipad'],
-      [20, 2, 'ipad'],
-      [29, 1, 'ipad'],
-      [29, 2, 'ipad'],
-      [40, 1, 'ipad'],
-      [40, 2, 'ipad'],
-      [76, 1, 'ipad'],
-      [76, 2, 'ipad'],
-      [83.5, 2, 'ipad'],
-    ]
-  else
-    # xcode9.1 and ios
-    contents = [
-      [20, 2, 'iphone'],
-      [20, 3, 'iphone'],
-      [29, 2, 'iphone'],
-      [29, 3, 'iphone'],
-      [40, 2, 'iphone'],
-      [40, 3, 'iphone'],
-      [60, 2, 'iphone'],
-      [60, 3, 'iphone'],
-      [20, 1, 'ipad'],
-      [20, 2, 'ipad'],
-      [29, 1, 'ipad'],
-      [29, 2, 'ipad'],
-      [40, 1, 'ipad'],
-      [40, 2, 'ipad'],
-      [76, 1, 'ipad'],
-      [76, 2, 'ipad'],
-      [83.5, 2, 'ipad'],
-      [1024, 1, 'ios-marketing']
-    ]
+Dir.glob("../lib/appiconset/*.json").each do |path|
+  json_data = open(path) do |content|
+    JSON.load(content)
   end
 
-  return contents
-end
+  # プラットフォームごとのディレクトリ
+  platform =  File.basename(path).gsub("-Contents.json", "")
+  output_dir = output + platform
+  FileUtils.mkdir_p(output_dir) unless FileTest.exist?(output_dir)
 
-FileUtils.mkdir_p(output) unless FileTest.exist?(output)
-images = []
+  puts(output_dir)
 
-get_xcode_contents(xcode, platform, FastImage.size(input)).each do |c|
-  # size, scale, idiom, role(watchOS), subtype(watchOS)
+  json_data["images"].each do |image|
+    size = image["size"].match(/(.*?)x/)[1].to_i
+    scale = image["scale"].gsub("x", "").to_i
+    # 実際のサイズ
+    real_size = size * scale
+    name = image["filename"]
 
-  size = c[0].to_s + "x" + c[0].to_s
-  idiom = c[2].to_s
-  filename = "Icon-" + c[0].to_s + "@" + c[1].to_s + "x.png"
-  scale = c[1].to_s + "x"
-  real_size = c[0].to_f * c[1].to_f
-
-  entry = {
-    size: size,
-    idiom: idiom,
-    filename: filename,
-    scale: scale
-  }
-
-  if !c[3].nil?
-    entry.store("role", c[3])
+    command = sprintf("sips -Z %d %s --out %s/%s &> /dev/null ", real_size, input, output_dir, name)
+    system(command)
   end
 
-  if !c[4].nil?
-    entry.store("subtype", c[4])
+  begin
+    if json_data["info"]["author"] == "xcode"
+      # Xcode用にファイルをコピーする
+      FileUtils.cp(path, output_dir + "/Contents.json")
+    end
+  rescue
+    # none
   end
-
-
-  images << entry
-
-  command = sprintf("sips -Z %d %s --out %s/%s ", real_size, input, output, filename)
-  system(command)
 end
-
-appiconset = {
-  images: images,
-  info: {
-    version: 1,
-    author: "xcode"
-  }
-}
-
-File.write(output + "/Contents.json", JSON.pretty_generate(appiconset))

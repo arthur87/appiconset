@@ -10,7 +10,7 @@
 * macOS
 * Univarsal
 * watchOS
-
+* Android
 
 # インストール
 
@@ -23,7 +23,7 @@ $ gem specific_install -l 'git://github.com/arthur87/appiconset.git'
 
 # 使い方
 
-ヘルプは、以下の方法で表示できます。
+ヘルプは以下の方法で表示できます。
 
 ```
 $ appiconset -h
@@ -34,12 +34,7 @@ $ appiconset -h
 
 ```
 $ appiconset icon.jpg
-$ cd ./AppIcon.appiconset
-$ ls
-Contents.json    Icon-20@3x.png   Icon-40@1x.png   Icon-60@3x.png
-Icon-1024@1x.png Icon-29@1x.png   Icon-40@2x.png   Icon-76@1x.png
-Icon-20@1x.png   Icon-29@2x.png   Icon-40@3x.png   Icon-76@2x.png
-Icon-20@2x.png   Icon-29@3x.png   Icon-60@2x.png   Icon-83.5@2x.png
+$ cd ./appiconset-generated
 ```
 
 Contents.jsonと複数のpngファイルが作成されます。  
