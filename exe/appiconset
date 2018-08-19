@@ -29,7 +29,9 @@ else
   input = ARGV[0]
 end
 
-Dir.glob("../lib/appiconset/*.json").each do |path|
+json_dir = Gem::Specification.find_by_path("appiconset").full_gem_path + "/lib/appiconset/*.json"
+
+Dir.glob(json_dir).each do |path|
   json_data = open(path) do |content|
     JSON.load(content)
   end
