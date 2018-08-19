@@ -5,12 +5,14 @@ require 'json'
 require 'optparse'
 require 'fileutils'
 require 'fastimage'
+require 'date'
 
 
 options = {}
 option_parser = OptionParser.new
 option_parser.version = Appiconset::VERSION
 option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
+option_parser.on('-p', '--platform <platform>', 'Set platform; univarsal') { |v| options[:platform] = v }
 option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
 option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
 
@@ -19,7 +21,7 @@ option_parser.parse!(ARGV)
 if options.has_key?(:output)
   output = options[:output]
 else
-  output = Dir::home + "/appiconset-generated/"
+  output = Dir::home + "/appiconset-generated-" + DateTime.now.strftime("%Y%m%d%H%M%S") + "/"
 end
 
 if ARGV.length == 0 || !File.exist?(ARGV[0])
@@ -28,6 +30,45 @@ if ARGV.length == 0 || !File.exist?(ARGV[0])
 else
   input = ARGV[0]
 end
+
+if options.has_key?(:platform) && options[:platform] == "univarsal"
+  image_size = FastImage.size(input)
+  contents = [
+    [image_size[0] / 3, 3],
+    [image_size[0] / 3, 2],
+    [image_size[0] / 3, 1]
+  ]
+
+  output_dir = output + "univarsal-xcode9.1"
+  FileUtils.mkdir_p(output_dir) unless FileTest.exist?(output_dir)
+
+  images = []
+
+  contents.each do |c|
+    name = "Icon-" + c[0].to_s + "@" + c[1].to_s + "x.png"
+    size = c[0].to_s + "x" + c[0].to_s
+    real_size = c[0].to_f * c[1].to_f
+    scale = c[1].to_s + "x"
+    command = sprintf("sips -Z %d %s --out %s/%s &> /dev/null ", real_size, input, output_dir, name)
+    system(command)
+
+    images << {
+        size: size,
+        idiom: "univarsal",
+        filename: name,
+        scale: scale
+    }
+  end
+
+  puts(output_dir)
+
+  File.write(output_dir + "/Contents.json", JSON.pretty_generate({images: images, info: {version: 1, author: "xcode"}}))
+
+  exit
+end
+
+
+# すべてのプラットフォームのアイコンを作成する
 
 json_dir = Gem::Specification.find_by_path("appiconset").full_gem_path + "/lib/appiconset/*.json"
 
