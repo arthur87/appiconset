@@ -12,7 +12,7 @@ options = {}
 option_parser = OptionParser.new
 option_parser.version = Appiconset::VERSION
 option_parser.on('-o', '--output <output>', '') { |v| options[:output] = v }
-option_parser.on('-p', '--platform <platform>', 'Set platform; univarsal') { |v| options[:platform] = v }
+option_parser.on('-p', '--platform <platform>', 'Set platform; universal') { |v| options[:platform] = v }
 option_parser.banner="Usage: #{File.basename($0)} [options] <input>"
 option_parser.on("-h", "--help", "Show this message") { puts option_parser; exit }
 
@@ -31,7 +31,9 @@ else
   input = ARGV[0]
 end
 
-if options.has_key?(:platform) && options[:platform] == "univarsal"
+PLATFORM_UNIVERSAL = "universal"
+
+if options.has_key?(:platform) && options[:platform] == PLATFORM_UNIVERSAL
   image_size = FastImage.size(input)
   contents = [
     [image_size[0] / 3, 3],
@@ -39,7 +41,7 @@ if options.has_key?(:platform) && options[:platform] == "univarsal"
     [image_size[0] / 3, 1]
   ]
 
-  output_dir = output + "univarsal-xcode9.1"
+  output_dir = output + PLATFORM_UNIVERSAL + "-xcode9.1"
   FileUtils.mkdir_p(output_dir) unless FileTest.exist?(output_dir)
 
   images = []
@@ -54,7 +56,7 @@ if options.has_key?(:platform) && options[:platform] == "univarsal"
 
     images << {
         size: size,
-        idiom: "univarsal",
+        idiom: PLATFORM_UNIVERSAL,
         filename: name,
         scale: scale
     }

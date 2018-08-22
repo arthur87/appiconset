@@ -8,7 +8,7 @@
 以下のプラットフォームのアイコン作成をサポートしています。
 * iOS
 * macOS
-* Univarsal
+* Universal
 * watchOS
 * Android
 

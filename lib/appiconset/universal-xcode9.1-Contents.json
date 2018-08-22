@@ -2,19 +2,19 @@
   "images": [
     {
       "size": "341x341",
-      "idiom": "univarsal",
+      "idiom": "universal",
       "filename": "Icon-341@3x.png",
       "scale": "3x"
     },
     {
       "size": "341x341",
-      "idiom": "univarsal",
+      "idiom": "universal",
       "filename": "Icon-341@2x.png",
       "scale": "2x"
     },
     {
       "size": "341x341",
-      "idiom": "univarsal",
+      "idiom": "universal",
       "filename": "Icon-341@1x.png",
       "scale": "1x"
     }
