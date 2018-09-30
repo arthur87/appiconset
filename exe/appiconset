@@ -87,7 +87,7 @@ Dir.glob(json_dir).each do |path|
   puts(output_dir)
 
   json_data["images"].each do |image|
-    size = image["size"].match(/(.*?)x/)[1].to_i
+    size = image["size"].match(/(.*?)x/)[1].to_f
     scale = image["scale"].gsub("x", "").to_i
     # 実際のサイズ
     real_size = size * scale
