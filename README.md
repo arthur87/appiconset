@@ -7,11 +7,12 @@
 * macOS Mojave(10.14.0)
 
 以下のプラットフォームのアイコン作成をサポートしています。
-* iOS
+* iOS/iPadOS
 * macOS
 * Universal
 * watchOS
 * Android
+* tvOS
 
 # インストール
 
@@ -39,4 +40,17 @@ $ cd ./appiconset-generated
 ```
 
 Contents.jsonと複数のpngファイルが作成されます。  
-これらのファイルをXcodeプロジェクトのAppIcon.appiconsetにコピーします。
+これらのファイルをXcodeプロジェクトの AppIcon.appiconset にコピーします。
+
+## tvOSアプリ向けのアイコン
+
+tvOSアプリ向けのアイコンを作成するためには、3種類の画像が必要です。 
+
+App Icon.imagestack のアイコンを作成するためには、800px x 480px の画像を用意します。  
+tv-xcode12.3 にアイコンが作成されます。
+
+Top Shelf Image.imageset のアイコンを作成するためには、3840px x 1440px の画像を用意します。  
+tv-top-shelf-xcode12.3 にアイコンが作成されます。
+
+Top Shelf Image Wide.imageset のアイコンを作成するためには、4640px x 1440px の画像を用意します。  
+tv-top-shelf-xcode12.3 にアイコンが作成されます。
