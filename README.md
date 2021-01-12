@@ -53,4 +53,4 @@ Top Shelf Image.imageset のアイコンを作成するためには、3840px x 1
 tv-top-shelf-xcode12.3 にアイコンが作成されます。
 
 Top Shelf Image Wide.imageset のアイコンを作成するためには、4640px x 1440px の画像を用意します。  
-tv-top-shelf-xcode12.3 にアイコンが作成されます。
+tv-top-shelf-wide-xcode12.3 にアイコンが作成されます。
