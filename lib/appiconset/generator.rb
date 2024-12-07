@@ -60,28 +60,17 @@ module Appiconset
       end
     end
 
-    # tvOSアイコン
-    def tvos_platforms
+    # ユニバーサルアイコン
+    def universal_platforms
+      size = FastImage.size(@input)
       platforms = [
         {
-          name: 'tv',
+          name: 'universal',
           contents: [
-            { width: 800, height: 480, scale: 2, idiom: 'tv' },
-            { width: 400, height: 240, scale: 1, idiom: 'tv' }
-          ]
-        },
-        {
-          name: 'tv-top-shelf',
-          contents: [
-            { width: 3840, height: 1440, scale: 2, idiom: 'tv' },
-            { width: 1920, height: 720, scale: 1, idiom: 'tv' }
-          ]
-        },
-        {
-          name: 'tv-top-shelf-wide',
-          contents: [
-            { width: 4640, height: 1440, scale: 2, idiom: 'tv' },
-            { width: 2320, height: 720, scale: 1, idiom: 'tv' }
+            { width: size[0], height: size[1], scale: 3 },
+            { width: size[0] / 3 * 2, height: size[1] / 3 * 2, scale: 2 },
+            { width: size[0] / 3, height: size[1] / 3, scale: 1 }
+
           ]
         }
       ]
@@ -93,10 +82,54 @@ module Appiconset
         platform[:contents].each do |content|
           width = content[:width].to_f
           height = content[:height].to_f
-          idiom = content[:idiom]
           scale = content[:scale].to_i
 
-          name = "Icon-#{idiom}@#{scale}x.png"
+          name = "Icon@#{scale}x.png"
+
+          image = Magick::ImageList.new(@input)
+          new_image = image.resize_to_fit(width, height)
+          new_image.format = 'PNG'
+          new_image.write(output_dir + name)
+        end
+      end
+    end
+
+    # tvOSアイコン
+    def tvos_platforms
+      platforms = [
+        {
+          name: 'tv',
+          contents: [
+            { width: 800, height: 480, scale: 2 },
+            { width: 400, height: 240, scale: 1 }
+          ]
+        },
+        {
+          name: 'tv-top-shelf',
+          contents: [
+            { width: 3840, height: 1440, scale: 2 },
+            { width: 1920, height: 720, scale: 1 }
+          ]
+        },
+        {
+          name: 'tv-top-shelf-wide',
+          contents: [
+            { width: 4640, height: 1440, scale: 2 },
+            { width: 2320, height: 720, scale: 1 }
+          ]
+        }
+      ]
+
+      platforms.each do |platform|
+        output_dir = "#{@output}#{platform[:name]}/"
+        FileUtils.mkdir_p(output_dir)
+
+        platform[:contents].each do |content|
+          width = content[:width].to_f
+          height = content[:height].to_f
+          scale = content[:scale].to_i
+
+          name = "Icon@#{scale}x.png"
 
           image = Magick::ImageList.new(@input)
           new_image = image.scale(height / 1440.0)

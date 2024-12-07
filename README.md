@@ -18,7 +18,7 @@
 1024px x 1024px の画像からアプリアイコンを作成します。
 
 ```
-$ appiconset icons -i='sample.jpg' -o='output'   
+$ appiconset square -i='sample.jpg' -o='output'   
 ```
 
 Contents.jsonと複数のpngファイルが作成されます。  

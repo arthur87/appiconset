@@ -17,10 +17,10 @@ module Appiconset
       puts(Appiconset::VERSION)
     end
 
-    desc 'icons', 'Icons'
-    method_option :input, desc: 'Input query', aliases: '-i'
+    desc 'square', 'Create icons from a square image'
+    method_option :input, desc: 'Input image(1024px x 1024px)', aliases: '-i'
     method_option :output, desc: 'Write output to <dir>', aliases: '-o'
-    def icons
+    def square
       generator = Appiconset::Generator.new
 
       begin
@@ -32,8 +32,8 @@ module Appiconset
       end
     end
 
-    desc 'tvos', 'Icons for tvOS'
-    method_option :input, desc: 'Input query', aliases: '-i'
+    desc 'tvos', 'Create tvOS icons'
+    method_option :input, desc: 'Input image(4640px x 1440px)', aliases: '-i'
     method_option :output, desc: 'Write output to <dir>', aliases: '-o'
     def tvos
       generator = Appiconset::Generator.new
@@ -41,6 +41,21 @@ module Appiconset
       begin
         generator.config(options[:input].to_s, options[:output].to_s, 4640, 1440)
         generator.tvos_platforms
+      rescue StandardError => e
+        warn e.message
+        exit(1)
+      end
+    end
+
+    desc 'icons', 'Create Universal icons'
+    method_option :input, desc: 'Input any size image', aliases: '-i'
+    method_option :output, desc: 'Write output to <dir>', aliases: '-o'
+    def icons
+      generator = Appiconset::Generator.new
+
+      begin
+        generator.config(options[:input].to_s, options[:output].to_s, 0, 0)
+        generator.universal_platforms
       rescue StandardError => e
         warn e.message
         exit(1)
