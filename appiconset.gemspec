@@ -1,30 +1,44 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'appiconset/version'
+# frozen_string_literal: true
+
+require_relative 'lib/appiconset/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "appiconset"
-  spec.version       = Appiconset::VERSION
-  spec.authors       = ["Kazuhisa Asakawa"]
-  spec.email         = ["asakawa@daispot.com"]
+  spec.name = 'appiconset'
+  spec.version = Appiconset::VERSION
+  spec.authors = ['arthur87']
+  spec.email = ['arthur87@users.noreply.github.com']
 
-  if spec.respond_to?(:metadata)
-    #spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
+  spec.summary = 'appiconset generator for Xcode'
+  spec.description = 'This is a Ruby script that will write out app icons needed for macOS apps,
+  iOS apps, etc. from a 1024px x 1024px image.'
+  spec.homepage = 'https://github.com/arthur87/appiconset'
+  spec.required_ruby_version = '>= 3.0.0'
+
+  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+
+  spec.metadata['homepage_uri'] = spec.homepage
+  spec.metadata['source_code_uri'] = 'https://github.com/arthur87/appiconset'
+  # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  gemspec = File.basename(__FILE__)
+  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+    ls.readlines("\x0", chomp: true).reject do |f|
+      (f == gemspec) ||
+        f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
+    end
   end
+  spec.bindir = 'exe'
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.require_paths = ['lib']
 
-  spec.summary       = %q{appiconset generator for Xcode}
-  spec.description   = %q{appiconset generator for Xcode}
-  spec.homepage      = "https://github.com/arthur87/appiconset"
-  spec.license       = "MIT"
+  # Uncomment to register a new dependency of your gem
+  # spec.add_dependency "example-gem", "~> 1.0"
+  spec.add_dependency 'fastimage'
+  spec.add_dependency 'rmagick'
+  spec.add_dependency 'thor'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
-
-  spec.add_development_dependency "bundler", "~> 1.8"
-  spec.add_development_dependency "rake", "~> 10.0"
-
-  spec.add_dependency "fastimage"
+  # For more information and examples about making a new gem, check out our
+  # guide at: https://bundler.io/guides/creating_gem.html
 end
