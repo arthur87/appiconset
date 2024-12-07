@@ -9,11 +9,11 @@ module Appiconset
   class Generator
     def initialize; end
 
-    def config(input, output)
+    def config(input, output, width = 1024, height = 1024)
       raise 'no input file.' unless File.exist?(input)
 
       size = FastImage.size(input)
-      raise 'unsupported size.' if size[0].to_i != 1024 || size[1].to_i != 1024
+      raise 'unsupported size.' if width != 0 && height != 0 && (size[0].to_i != width || size[1].to_i != height)
 
       output += '/' unless output.end_with?('/')
 
@@ -45,7 +45,10 @@ module Appiconset
           real_size = size * scale
           name = image['filename']
 
-          image_write(real_size, output_dir + name)
+          image = Magick::ImageList.new(@input)
+          new_image = image.resize_to_fit(real_size, real_size)
+          new_image.format = 'PNG'
+          new_image.write(output_dir + name)
         end
 
         # Xcode用にファイルをコピーする
@@ -57,13 +60,51 @@ module Appiconset
       end
     end
 
-    private
+    # tvOSアイコン
+    def tvos_platforms
+      platforms = [
+        {
+          name: 'tv',
+          contents: [
+            { width: 800, height: 480, scale: 2, idiom: 'tv' },
+            { width: 400, height: 240, scale: 1, idiom: 'tv' }
+          ]
+        },
+        {
+          name: 'tv-top-shelf',
+          contents: [
+            { width: 3840, height: 1440, scale: 2, idiom: 'tv' },
+            { width: 1920, height: 720, scale: 1, idiom: 'tv' }
+          ]
+        },
+        {
+          name: 'tv-top-shelf-wide',
+          contents: [
+            { width: 4640, height: 1440, scale: 2, idiom: 'tv' },
+            { width: 2320, height: 720, scale: 1, idiom: 'tv' }
+          ]
+        }
+      ]
 
-    def image_write(size, path)
-      image = Magick::ImageList.new(@input)
-      new_image = image.resize_to_fit(size, size)
-      new_image.format = 'PNG'
-      new_image.write(path)
+      platforms.each do |platform|
+        output_dir = "#{@output}#{platform[:name]}/"
+        FileUtils.mkdir_p(output_dir)
+
+        platform[:contents].each do |content|
+          width = content[:width].to_f
+          height = content[:height].to_f
+          idiom = content[:idiom]
+          scale = content[:scale].to_i
+
+          name = "Icon-#{idiom}@#{scale}x.png"
+
+          image = Magick::ImageList.new(@input)
+          new_image = image.scale(height / 1440.0)
+          new_image = new_image.crop(Magick::CenterGravity, width, height)
+          new_image.format = 'PNG'
+          new_image.write(output_dir + name)
+        end
+      end
     end
   end
 end

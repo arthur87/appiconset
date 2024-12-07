@@ -19,13 +19,28 @@ module Appiconset
 
     desc 'icons', 'Icons'
     method_option :input, desc: 'Input query', aliases: '-i'
-    method_option :output, desc: 'Write output to <file>', aliases: '-o'
+    method_option :output, desc: 'Write output to <dir>', aliases: '-o'
     def icons
       generator = Appiconset::Generator.new
 
       begin
         generator.config(options[:input].to_s, options[:output].to_s)
         generator.square_platforms
+      rescue StandardError => e
+        warn e.message
+        exit(1)
+      end
+    end
+
+    desc 'tvos', 'Icons for tvOS'
+    method_option :input, desc: 'Input query', aliases: '-i'
+    method_option :output, desc: 'Write output to <dir>', aliases: '-o'
+    def tvos
+      generator = Appiconset::Generator.new
+
+      begin
+        generator.config(options[:input].to_s, options[:output].to_s, 4640, 1440)
+        generator.tvos_platforms
       rescue StandardError => e
         warn e.message
         exit(1)

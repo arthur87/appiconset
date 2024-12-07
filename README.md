@@ -11,6 +11,7 @@
 * Universal
 * watchOS
 * Android
+* tvOS
 
 ## 使い方
 
@@ -22,3 +23,14 @@ $ appiconset icons -i='sample.jpg' -o='output'
 
 Contents.jsonと複数のpngファイルが作成されます。  
 これらのファイルをXcodeプロジェクトの AppIcon.appiconset にコピーします。
+
+
+## tvOSのアイコンについて
+
+tvOSアプリ向けのアイコンを作成するには。4640px x 1440px の画像を用意します。  
+この画像からApp Icon.imagestack、Top Shelf Image.imageset、Top Shelf Image Wide.imagesetのアイコンを作成します。
+
+
+```
+$ appiconset tvos -i='sample.jpg' -o='output'   
+```
