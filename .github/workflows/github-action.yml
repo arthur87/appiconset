@@ -39,7 +39,7 @@ jobs:
 
       - name: Run install
         run: |
-          sudo apt-get install libmagickwand-dev imagemagick
+          sudo apt-get install libmagickwand-dev imagemagick which
           bundle install
 
       - name: Run tests
