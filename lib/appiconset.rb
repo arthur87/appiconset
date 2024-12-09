@@ -5,7 +5,7 @@ require 'appiconset/cli'
 require 'appiconset/generator'
 require 'fastimage'
 require 'fileutils'
-require 'RMagick'
+require 'rmagick'
 
 module Appiconset
   class Error < StandardError; end
