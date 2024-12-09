@@ -38,6 +38,7 @@ jobs:
           bundler-cache: true
 
       - name: Run install
+        run: apt-get install libmagickwand-dev
         run: bundle install
 
       - name: Run tests
