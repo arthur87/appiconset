@@ -39,7 +39,7 @@ jobs:
 
       - name: Run install
         run: |
-          apt-get install libmagickwand-dev
+          sudo apt-get install libmagickwand-dev
           bundle install
 
       - name: Run tests
