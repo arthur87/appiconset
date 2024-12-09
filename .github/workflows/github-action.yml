@@ -38,8 +38,9 @@ jobs:
           bundler-cache: true
 
       - name: Run install
-        run: apt-get install libmagickwand-dev
-        run: bundle install
+        run: |
+          apt-get install libmagickwand-dev
+          bundle install
 
       - name: Run tests
         run: bundle exec rspec
