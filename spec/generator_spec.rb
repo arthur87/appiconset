@@ -3,6 +3,7 @@
 require 'appiconset/generator'
 require 'fileutils'
 require 'fastimage'
+require 'RMagick'
 
 RSpec.describe Appiconset::Generator do
   let(:output_dir) { "#{__dir__}/../tmp/" }
