@@ -3,19 +3,13 @@
 require 'appiconset/generator'
 require 'fileutils'
 require 'fastimage'
-require 'RMagick'
+require 'rmagick'
 
 RSpec.describe Appiconset::Generator do
   let(:output_dir) { "#{__dir__}/../tmp/" }
   let(:input_1024_image) { "#{__dir__}/assets/1024.jpg" }
   let(:input_300_image) { "#{__dir__}/assets/300.jpg" }
   let(:input_tvos_image) { "#{__dir__}/assets/tvos.jpg" }
-
-  before do
-    output_dir
-    FileUtils.rm_r(output_dir) if Dir.exist?(output_dir)
-    FileUtils.mkdir_p(output_dir)
-  end
 
   it 'square' do
     generator = Appiconset::Generator.new
