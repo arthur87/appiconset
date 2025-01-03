@@ -30,7 +30,15 @@ Contents.jsonと複数のpngファイルが作成されます。
 ## tvOSのアイコン
 
 tvOSアプリ向けのアイコンを作成するには。4640px x 1440px の画像を用意します。  
-この画像からApp Icon.imagestack、Top Shelf Image.imageset、Top Shelf Image Wide.imagesetのアイコンを作成します。
+入力画像から以下の画像を生成します。  
+入力画像は tv-top-shelf-wide と同じになります。
+tv-top-shelf は tv-top-shelf-wide から赤の領域が削除された画像、tvはtv-top-shelfから緑の領域が削除された画像になります。
+
+| ディレクトリの名前 | サイズ | 画像 |
+|--|--|--|
+| tv | 400x1440 | ![tv](spec/output/tv/Icon@2x.png) |
+| tv-top-shelf | 3840x1440 | ![tv-top-shelf](spec/output//tv-top-shelf/Icon@2x.png)|
+| tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](spec/output//tv-top-shelf-wide/Icon@2x.png) |
 
 ```
 $ appiconset tvos -i='sample.jpg' -o='output'   

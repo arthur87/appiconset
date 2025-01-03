@@ -6,10 +6,10 @@ require 'fastimage'
 require 'rmagick'
 
 RSpec.describe Appiconset::Generator do
-  let(:output_dir) { "#{__dir__}/../tmp/" }
-  let(:input_1024_image) { "#{__dir__}/assets/1024.jpg" }
-  let(:input_300_image) { "#{__dir__}/assets/300.jpg" }
-  let(:input_tvos_image) { "#{__dir__}/assets/tvos.jpg" }
+  let(:output_dir) { "#{__dir__}/output/" }
+  let(:input_1024_image) { "#{__dir__}/input/1024.jpg" }
+  let(:input_300_image) { "#{__dir__}/input/300.jpg" }
+  let(:input_tvos_image) { "#{__dir__}/input/tvos.jpg" }
 
   it 'square' do
     generator = Appiconset::Generator.new

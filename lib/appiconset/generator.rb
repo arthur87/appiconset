@@ -96,6 +96,8 @@ module Appiconset
 
     # tvOSアイコン
     def tvos_platforms
+      # Input 4640x1440
+      # Output 2400x1440, 3840x1440, 4640x1440
       platforms = [
         {
           name: 'tv',
