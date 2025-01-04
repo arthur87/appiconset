@@ -1,5 +1,7 @@
 # Appiconset
 
+[![Gem Version](https://badge.fury.io/rb/appiconset.svg)](https://badge.fury.io/rb/appiconset)
+
 1024px x 1024pxの画像からmacOSアプリやiOSアプリで必要になるアプリアイコンを書き出すRubyスクリプトです。
 
 以下の環境で動作確認をしています。  
