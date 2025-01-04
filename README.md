@@ -38,9 +38,9 @@ tv-top-shelf は tv-top-shelf-wide から赤の領域が削除された画像、
 
 | ディレクトリの名前 | サイズ | 画像 |
 |--|--|--|
-| tv | 400x1440 | ![tv](spec/output/tv/Icon@2x.png) |
-| tv-top-shelf | 3840x1440 | ![tv-top-shelf](spec/output//tv-top-shelf/Icon@2x.png)|
-| tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](spec/output//tv-top-shelf-wide/Icon@2x.png) |
+| tv | 400x1440 | ![tv](readme/tv/Icon@2x.png) |
+| tv-top-shelf | 3840x1440 | ![tv-top-shelf](readme/tv-top-shelf/Icon@2x.png)|
+| tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](readme/tv-top-shelf-wide/Icon@2x.png) |
 
 ```
 $ appiconset tvos -i='sample.jpg' -o='output'   

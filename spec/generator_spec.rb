@@ -7,8 +7,7 @@ require 'rmagick'
 
 RSpec.describe Appiconset::Generator do
   let(:output_dir) { "#{__dir__}/output/" }
-  let(:input_1024_image) { "#{__dir__}/input/1024.jpg" }
-  let(:input_300_image) { "#{__dir__}/input/300.jpg" }
+  let(:input_1024_image) { "#{__dir__}/input/1024.png" }
   let(:input_tvos_image) { "#{__dir__}/input/tvos.jpg" }
 
   it 'square' do
@@ -30,12 +29,12 @@ RSpec.describe Appiconset::Generator do
 
   it 'universal' do
     generator = Appiconset::Generator.new
-    generator.config(input_300_image, output_dir, 0, 0)
+    generator.config(input_1024_image, output_dir, 0, 0)
     generator.universal_platforms
 
-    assert_size('universal/Icon@1x.png', [100, 100])
-    assert_size('universal/Icon@2x.png', [200, 200])
-    assert_size('universal/Icon@3x.png', [300, 300])
+    assert_size('universal/Icon@1x.png', [1024 / 3, 1024 / 3])
+    assert_size('universal/Icon@2x.png', [1024 / 3 * 2, 1024 / 3 * 2])
+    assert_size('universal/Icon@3x.png', [1024, 1024])
   end
 
   it 'tvos' do
