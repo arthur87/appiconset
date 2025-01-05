@@ -6,7 +6,7 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
+/spec/output/
 
 .DS_Store
 .idea

@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version = Appiconset::VERSION
   spec.authors = ['arthur87']
   spec.email = ['arthur87@users.noreply.github.com']
+  spec.licenses = ['MIT']
 
   spec.summary = 'appiconset generator for Xcode'
   spec.description = 'This is a Ruby script that will write out app icons needed for macOS apps,
