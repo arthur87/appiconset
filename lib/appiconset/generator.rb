@@ -156,7 +156,7 @@ module Appiconset
 
     # icnsアイコン
     def icns_platforms
-      return unless @width == 1024 && @height == 1024 && RUBY_PLATFORM.match(/darwin/)
+      return unless @width == 1024 && @height == 1024
 
       show_info('icns')
 
@@ -181,6 +181,9 @@ module Appiconset
         end
       end
 
+      return unless RUBY_PLATFORM.match(/darwin/)
+
+      # macOSで実行可能
       system("iconutil -c icns #{output_dir}")
     end
 
