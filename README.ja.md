@@ -16,8 +16,9 @@
 * Universal
 * watchOS
 * Android
-* icns
 * tvOS
+* icns.iconset
+* icns(macOS only)
 
 # ガイド
 
