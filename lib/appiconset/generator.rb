@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# https://wakabamac.hatenablog.com/entry/2017/04/02/034254
 require 'appiconset'
 require 'json'
 
