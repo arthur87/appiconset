@@ -17,6 +17,8 @@ Icon creation is supported for the following platforms.
 * watchOS
 * Android
 * tvOS
+* icns.iconset
+* icns(macOS only)
 
 # Guide
 

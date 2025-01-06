@@ -23,9 +23,12 @@
 * watchOS
 * Android
 * tvOS
+* icns.iconset
+* icns(macOS only)
 
 # ガイド
 
+## 正方形アイコン
 正方形アイコンを生成するには、1024px x 1024px の画像からアプリアイコンを作成します。
 
 ```
@@ -78,6 +81,8 @@ Icon creation is supported for the following platforms.
 * watchOS
 * Android
 * tvOS
+* icns.iconset
+* icns(macOS only)
 
 # Guide
 
