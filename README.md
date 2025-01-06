@@ -16,6 +16,7 @@ Icon creation is supported for the following platforms.
 * Universal
 * watchOS
 * Android
+* icns
 * tvOS
 
 # Guide

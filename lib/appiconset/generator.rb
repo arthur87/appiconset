@@ -154,6 +154,36 @@ module Appiconset
       end
     end
 
+    # icnsアイコン
+    def icns_platforms
+      return unless @width == 1024 && @height == 1024 && RUBY_PLATFORM.match(/darwin/)
+
+      show_info('icns')
+
+      output_dir = "#{@output}icns.iconset/"
+      FileUtils.mkdir_p(output_dir)
+
+      sizes = [512, 256, 128, 64, 32, 16]
+      sizes.each do |size|
+        [2, 1].each do |scale|
+          if scale == 2
+            name = "icon_#{size}x#{size}@2x.png"
+            new_size = size * scale
+          else
+            name = "icon_#{size}x#{size}.png"
+            new_size = size
+          end
+
+          image = Magick::ImageList.new(@input)
+          new_image = image.resize_to_fit(new_size, new_size)
+          new_image.format = 'PNG'
+          new_image.write(output_dir + name)
+        end
+      end
+
+      system("iconutil -c icns #{output_dir}")
+    end
+
     def show_info(platform_name)
       puts "Created #{platform_name} icons from #{@width} x #{@height} image."
     end

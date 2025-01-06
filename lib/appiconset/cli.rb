@@ -28,6 +28,7 @@ module Appiconset
         generator.square_platforms
         generator.tvos_platforms
         generator.universal_platforms
+        generator.icns_platforms
       rescue StandardError => e
         warn e.message
         exit(1)
