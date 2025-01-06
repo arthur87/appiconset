@@ -15,6 +15,8 @@ module Appiconset
       raise 'no output <dir>.' if output == ''
 
       size = FastImage.size(input)
+      raise 'Unsupported file.' if size.nil?
+
       @width = size[0]
       @height = size[1]
 
