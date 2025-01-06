@@ -158,7 +158,7 @@ module Appiconset
     def icns_platforms
       return unless @width == 1024 && @height == 1024
 
-      show_info('icns')
+      show_info('icns.iconset')
 
       output_dir = "#{@output}icns.iconset/"
       FileUtils.mkdir_p(output_dir)
@@ -184,11 +184,12 @@ module Appiconset
       return unless RUBY_PLATFORM.match(/darwin/)
 
       # macOSで実行可能
+      show_info('icns')
       system("iconutil -c icns #{output_dir}")
     end
 
     def show_info(platform_name)
-      puts "Created #{platform_name} icons from #{@width} x #{@height} image."
+      puts "Created #{platform_name} icon(s) from #{@width} x #{@height} image."
     end
   end
 end
