@@ -20,12 +20,10 @@
 
 # ガイド
 
-## 正方形アイコン
-
-1024px x 1024px の画像からアプリアイコンを作成します。
+正方形アイコンを生成するには、1024px x 1024px の画像からアプリアイコンを作成します。
 
 ```
-$ appiconset square -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```
 
 Contents.jsonと複数のpngファイルが作成されます。  
@@ -45,7 +43,7 @@ tvOSアプリ向けのアイコンを作成するには。4640px x 1440px の画
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
 ```
-$ appiconset tvos -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```
 
 ## 任意のサイズのアイコン
@@ -53,5 +51,5 @@ $ appiconset tvos -i='sample.jpg' -o='output'
 任意のサイズの画像から、1倍、2/3倍、1/3倍のアイコンを作成します。
 
 ```
-$ appiconset universal -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```

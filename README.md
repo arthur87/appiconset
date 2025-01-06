@@ -25,7 +25,7 @@ Icon creation is supported for the following platforms.
 Create an app icon from a 1024px x 1024px image.
 
 ```
-$ appiconset square -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```
 
 A Contents.json and several png files will be created.  
@@ -45,7 +45,7 @@ The input image is the same as tv-top-shelf-wide, tv-top-shelf is the image from
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
 ```
-$ appiconset tvos -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```
 
 ## Icons of any size
@@ -53,5 +53,5 @@ $ appiconset tvos -i='sample.jpg' -o='output'
 Create 1x, 2/3x, and 1/3x icons from any size image.
 
 ```
-$ appiconset universal -i='sample.jpg' -o='output'   
+$ appiconset g -i='sample.jpg' -o='output'   
 ```

@@ -12,7 +12,7 @@ RSpec.describe Appiconset::Generator do
 
   it 'square' do
     generator = Appiconset::Generator.new
-    generator.config(input_1024_image, output_dir, 1024, 1024)
+    generator.config(input_1024_image, output_dir)
     generator.square_platforms
 
     assert_size('mac-xcode9.1/Icon-16@1x.png', [16, 16])
@@ -29,7 +29,7 @@ RSpec.describe Appiconset::Generator do
 
   it 'universal' do
     generator = Appiconset::Generator.new
-    generator.config(input_1024_image, output_dir, 0, 0)
+    generator.config(input_1024_image, output_dir)
     generator.universal_platforms
 
     assert_size('universal/Icon@1x.png', [1024 / 3, 1024 / 3])
@@ -39,7 +39,7 @@ RSpec.describe Appiconset::Generator do
 
   it 'tvos' do
     generator = Appiconset::Generator.new
-    generator.config(input_tvos_image, output_dir, 4640, 1440)
+    generator.config(input_tvos_image, output_dir)
     generator.tvos_platforms
 
     assert_size('tv/Icon@1x.png', [400, 240])
