@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# https://wakabamac.hatenablog.com/entry/2017/04/02/034254
 require 'appiconset'
 require 'json'
 
@@ -9,11 +10,13 @@ module Appiconset
   class Generator
     def initialize; end
 
-    def config(input, output, width = 1024, height = 1024)
+    def config(input, output)
       raise 'no input file.' unless File.exist?(input)
+      raise 'no output <dir>.' if output == ''
 
       size = FastImage.size(input)
-      raise 'unsupported size.' if width != 0 && height != 0 && (size[0].to_i != width || size[1].to_i != height)
+      @width = size[0]
+      @height = size[1]
 
       output += '/' unless output.end_with?('/')
 
@@ -25,6 +28,10 @@ module Appiconset
 
     # 正方形アイコン
     def square_platforms
+      return unless @width == 1024 && @height == 1024
+
+      show_info('square')
+
       json_dir = "#{__dir__}/settings/*.json"
 
       Dir.glob(json_dir).each do |path|
@@ -62,15 +69,15 @@ module Appiconset
 
     # ユニバーサルアイコン
     def universal_platforms
-      size = FastImage.size(@input)
+      show_info('universal')
+
       platforms = [
         {
           name: 'universal',
           contents: [
-            { width: size[0], height: size[1], scale: 3 },
-            { width: size[0] / 3 * 2, height: size[1] / 3 * 2, scale: 2 },
-            { width: size[0] / 3, height: size[1] / 3, scale: 1 }
-
+            { width: @width, height: @height, scale: 3 },
+            { width: @width / 3 * 2, height: @height / 3 * 2, scale: 2 },
+            { width: @width / 3, height: @height / 3, scale: 1 }
           ]
         }
       ]
@@ -95,9 +102,13 @@ module Appiconset
     end
 
     # tvOSアイコン
+    # Input 4640x1440
+    # Output 2400x1440, 3840x1440, 4640x1440
     def tvos_platforms
-      # Input 4640x1440
-      # Output 2400x1440, 3840x1440, 4640x1440
+      return unless @width == 4640 && @height == 1440
+
+      show_info('tvOS')
+
       platforms = [
         {
           name: 'tv',
@@ -140,6 +151,10 @@ module Appiconset
           new_image.write(output_dir + name)
         end
       end
+    end
+
+    def show_info(platform_name)
+      puts "Created #{platform_name} icons from #{@width} x #{@height} image."
     end
   end
 end
