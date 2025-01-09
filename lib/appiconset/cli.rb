@@ -26,9 +26,7 @@ module Appiconset
       begin
         generator.config(options[:input].to_s, options[:output].to_s)
         generator.square_platforms
-        generator.tvos_platforms
-        generator.universal_platforms
-        generator.icns_platforms
+        generator.any_platforms
       rescue StandardError => e
         warn e.message
         exit(1)
