@@ -19,6 +19,7 @@
 * tvOS
 * icns.iconset
 * icns(macOS only)
+* favicon
 
 # ガイド
 

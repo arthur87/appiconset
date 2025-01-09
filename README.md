@@ -19,6 +19,7 @@ Icon creation is supported for the following platforms.
 * tvOS
 * icns.iconset
 * icns(macOS only)
+* favicon
 
 # Guide
 
