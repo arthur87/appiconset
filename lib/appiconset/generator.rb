@@ -163,7 +163,7 @@ module Appiconset
 
     # 入力画像のサイズが条件に一致したときtrueを返す
     def size_match?(size)
-      size != [0, 0] && @width == size[0] && @height == size[1]
+      size == [0, 0] || (@width == size[0] && @height == size[1])
     end
 
     def show_info(platform_name)
