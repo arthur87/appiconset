@@ -19,16 +19,19 @@ Icon creation is supported for the following platforms.
 * tvOS
 * icns.iconset
 * icns(macOS only)
+* favicon
 
 # Guide
 
-## Square icons
-
-Create an app icon from a 1024px x 1024px image.
+Create multiple app icons from one image.
 
 ```
 $ appiconset g -i='sample.jpg' -o='output'   
 ```
+
+## Square icons
+
+Create an app icon from a 1024px x 1024px image.
 
 A Contents.json and several png files will be created.  
 Copy these files to AppIcon.appiconset in the Xcode project.
@@ -46,14 +49,7 @@ The input image is the same as tv-top-shelf-wide, tv-top-shelf is the image from
 | tv-top-shelf | 3840x1440 | ![tv-top-shelf](sample/tv-top-shelf/Icon@2x.png)|
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
-```
-$ appiconset g -i='sample.jpg' -o='output'   
-```
 
 ## Icons of any size
 
 Create 1x, 2/3x, and 1/3x icons from any size image.
-
-```
-$ appiconset g -i='sample.jpg' -o='output'   
-```

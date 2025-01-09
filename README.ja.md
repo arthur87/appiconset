@@ -19,15 +19,19 @@
 * tvOS
 * icns.iconset
 * icns(macOS only)
+* favicon
 
 # ガイド
 
-## 正方形アイコン
-正方形アイコンを生成するには、1024px x 1024px の画像からアプリアイコンを作成します。
+1つの画像から複数のアプリアイコンを作成します。
 
 ```
 $ appiconset g -i='sample.jpg' -o='output'   
 ```
+
+
+## 正方形アイコン
+正方形アイコンを作成するには、1024px x 1024px の画像を用意します。
 
 Contents.jsonと複数のpngファイルが作成されます。  
 これらのファイルをXcodeプロジェクトの AppIcon.appiconset にコピーします。
@@ -45,14 +49,6 @@ tvOSアプリ向けのアイコンを作成するには。4640px x 1440px の画
 | tv-top-shelf | 3840x1440 | ![tv-top-shelf](sample/tv-top-shelf/Icon@2x.png)|
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
-```
-$ appiconset g -i='sample.jpg' -o='output'   
-```
-
 ## 任意のサイズのアイコン
 
 任意のサイズの画像から、1倍、2/3倍、1/3倍のアイコンを作成します。
-
-```
-$ appiconset g -i='sample.jpg' -o='output'   
-```

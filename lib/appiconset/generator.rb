@@ -2,6 +2,7 @@
 
 require 'appiconset'
 require 'json'
+require 'rbconfig'
 
 # Appiconset
 module Appiconset
@@ -29,7 +30,7 @@ module Appiconset
 
     # 正方形アイコン
     def square_platforms
-      return unless @width == 1024 && @height == 1024
+      return unless size_match?([1024, 1024])
 
       show_info('square')
 
@@ -68,124 +69,126 @@ module Appiconset
       end
     end
 
-    # ユニバーサルアイコン
-    def universal_platforms
-      show_info('universal')
-
+    # rubocop:todo Metrics/PerceivedComplexity
+    # rubocop:todo Metrics/AbcSize
+    def any_platforms # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
       platforms = [
         {
           name: 'universal',
+          size: [0, 0],
           contents: [
-            { width: @width, height: @height, scale: 3 },
-            { width: @width / 3 * 2, height: @height / 3 * 2, scale: 2 },
-            { width: @width / 3, height: @height / 3, scale: 1 }
+            { width: @width, height: @height, name: 'Icon@3x.png' },
+            { width: @width / 3 * 2, height: @height / 3 * 2, name: 'Icon@2x.png' },
+            { width: @width / 3, height: @height / 3, name: 'Icon@1x.png' }
           ]
-        }
-      ]
-
-      platforms.each do |platform|
-        output_dir = "#{@output}#{platform[:name]}/"
-        FileUtils.mkdir_p(output_dir)
-
-        platform[:contents].each do |content|
-          width = content[:width].to_f
-          height = content[:height].to_f
-          scale = content[:scale].to_i
-
-          name = "Icon@#{scale}x.png"
-
-          image = Magick::ImageList.new(@input)
-          new_image = image.resize_to_fit(width, height)
-          new_image.format = 'PNG'
-          new_image.write(output_dir + name)
-        end
-      end
-    end
-
-    # tvOSアイコン
-    # Input 4640x1440
-    # Output 2400x1440, 3840x1440, 4640x1440
-    def tvos_platforms
-      return unless @width == 4640 && @height == 1440
-
-      show_info('tvOS')
-
-      platforms = [
+        },
         {
           name: 'tv',
+          size: [4640, 1440],
           contents: [
-            { width: 800, height: 480, scale: 2 },
-            { width: 400, height: 240, scale: 1 }
+            { width: 800, height: 480, name: 'Icon@2x.png' },
+            { width: 400, height: 240, name: 'Icon@1x.png' }
           ]
         },
         {
           name: 'tv-top-shelf',
+          size: [4640, 1440],
           contents: [
-            { width: 3840, height: 1440, scale: 2 },
-            { width: 1920, height: 720, scale: 1 }
+            { width: 3840, height: 1440, name: 'Icon@2x.png' },
+            { width: 1920, height: 720, name: 'Icon@1x.png' }
           ]
         },
         {
           name: 'tv-top-shelf-wide',
+          size: [4640, 1440],
           contents: [
-            { width: 4640, height: 1440, scale: 2 },
-            { width: 2320, height: 720, scale: 1 }
+            { width: 4640, height: 1440, name: 'Icon@2x.png' },
+            { width: 2320, height: 720, name: 'Icon@1x.png' }
+          ]
+        },
+        {
+          name: 'icns.iconset',
+          size: [1024, 1024],
+          contents: [
+            { width: 1024, height: 1024, name: 'icon_512x512@2x.png' },
+            { width: 512, height: 512, name: 'icon_512x512.png' },
+            { width: 512, height: 512, name: 'icon_256x256@2x.png' },
+            { width: 256, height: 256, name: 'icon_256x256.png' },
+            { width: 256, height: 256, name: 'icon_128x128@2x.png' },
+            { width: 128, height: 128, name: 'icon_128x128.png' },
+            { width: 128, height: 128, name: 'icon_64x64@2x.png' },
+            { width: 64, height: 64, name: 'icon_64x64.png' },
+            { width: 64, height: 64, name: 'icon_32x32@2x.png' },
+            { width: 32, height: 32, name: 'icon_32x32.png' },
+            { width: 32, height: 32, name: 'icon_16x16@2x.png' },
+            { width: 16, height: 16, name: 'icon_16x16.png' }
+          ]
+        },
+        {
+          name: 'favicon',
+          size: [1024, 1024],
+          contents: [
+            { width: 256, height: 256, name: 'icon_256x256.png' },
+            { width: 128, height: 128, name: 'icon_128x128.png' },
+            { width: 64, height: 64, name: 'icon_64x64.png' },
+            { width: 48, height: 48, name: 'icon_48x48.png' },
+            { width: 32, height: 32, name: 'icon_32x32.png' },
+            { width: 24, height: 24, name: 'icon_24x24.png' },
+            { width: 16, height: 16, name: 'icon_16x16.png' }
           ]
         }
       ]
 
       platforms.each do |platform|
-        output_dir = "#{@output}#{platform[:name]}/"
+        platform_name = platform[:name]
+        next unless size_match?(platform[:size])
+
+        show_info(platform_name)
+
+        output_dir = "#{@output}#{platform_name}/"
         FileUtils.mkdir_p(output_dir)
 
         platform[:contents].each do |content|
           width = content[:width].to_f
           height = content[:height].to_f
-          scale = content[:scale].to_i
-
-          name = "Icon@#{scale}x.png"
+          name = content[:name]
 
           image = Magick::ImageList.new(@input)
-          new_image = image.scale(height / 1440.0)
-          new_image = new_image.crop(Magick::CenterGravity, width, height)
-          new_image.format = 'PNG'
-          new_image.write(output_dir + name)
+          if platform_name.start_with?('tv')
+            image = image.scale(height / 1440.0)
+            image = image.crop(Magick::CenterGravity, width, height)
+          else
+            image = image.resize_to_fit(width, height)
+          end
+          image.format = 'PNG'
+          image.write(output_dir + name)
+        end
+
+        if platform_name == 'icns.iconset' && RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+          # macOSで実行可能
+          show_info('icns')
+          system("iconutil -c icns --output #{@output}Icon.icns #{@output}icns.iconset/")
+        elsif platform_name == 'favicon'
+          images = platforms.find do |x|
+            x[:name] == 'favicon'
+          end[:contents].map do |x| # rubocop:disable Style/MultilineBlockChain
+            "#{output_dir}#{x[:name]}"
+          end
+
+          image = Magick::ImageList.new(*images)
+          image.format = 'ICO'
+          image.write("#{@output}favicon/favicon.ico")
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/PerceivedComplexity
 
-    # icnsアイコン
-    def icns_platforms
-      return unless @width == 1024 && @height == 1024
+    private
 
-      show_info('icns.iconset')
-
-      output_dir = "#{@output}icns.iconset/"
-      FileUtils.mkdir_p(output_dir)
-
-      sizes = [512, 256, 128, 64, 32, 16]
-      sizes.each do |size|
-        [2, 1].each do |scale|
-          if scale == 2
-            name = "icon_#{size}x#{size}@2x.png"
-            new_size = size * scale
-          else
-            name = "icon_#{size}x#{size}.png"
-            new_size = size
-          end
-
-          image = Magick::ImageList.new(@input)
-          new_image = image.resize_to_fit(new_size, new_size)
-          new_image.format = 'PNG'
-          new_image.write(output_dir + name)
-        end
-      end
-
-      return unless RUBY_PLATFORM.match(/darwin/)
-
-      # macOSで実行可能
-      show_info('icns')
-      system("iconutil -c icns #{output_dir}")
+    # 入力画像のサイズが条件に一致したときtrueを返す
+    def size_match?(size)
+      size == [0, 0] || (@width == size[0] && @height == size[1])
     end
 
     def show_info(platform_name)
