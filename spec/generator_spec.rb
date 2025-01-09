@@ -10,7 +10,7 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
   let(:input_1024_image) { "#{__dir__}/input/1024.png" }
   let(:input_tvos_image) { "#{__dir__}/input/tvos.jpg" }
 
-  it 'square' do
+  it 'square_platforms' do
     generator = Appiconset::Generator.new
     generator.config(input_1024_image, output_dir)
     generator.square_platforms
@@ -27,7 +27,7 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     assert_size('mac-xcode9.1/Icon-512@2x.png', [1024, 1024])
   end
 
-  it 'any' do
+  it 'any_platforms' do
     generator = Appiconset::Generator.new
     generator.config(input_1024_image, output_dir)
     generator.any_platforms
@@ -52,7 +52,7 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     expect(File.exist?("#{output_dir}Icon.icns")).to be true if RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
   end
 
-  it 'tvos' do
+  it 'tvos_platforms' do
     generator = Appiconset::Generator.new
     generator.config(input_tvos_image, output_dir)
     generator.any_platforms
