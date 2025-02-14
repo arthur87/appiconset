@@ -25,7 +25,7 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     assert_size('mac-xcode9.1/Icon-256@2x.png', [512, 512])
     assert_size('mac-xcode9.1/Icon-512@1x.png', [512, 512])
     assert_size('mac-xcode9.1/Icon-512@2x.png', [1024, 1024])
-    
+
     assert_size('icns.iconset/icon_16x16.png', [16, 16])
     assert_size('icns.iconset/icon_16x16@2x.png', [32, 32])
     assert_size('icns.iconset/icon_32x32.png', [32, 32])
