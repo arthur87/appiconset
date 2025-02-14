@@ -25,16 +25,6 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     assert_size('mac-xcode9.1/Icon-256@2x.png', [512, 512])
     assert_size('mac-xcode9.1/Icon-512@1x.png', [512, 512])
     assert_size('mac-xcode9.1/Icon-512@2x.png', [1024, 1024])
-  end
-
-  it 'any_platforms' do
-    generator = Appiconset::Generator.new
-    generator.config(input_1024_image, output_dir)
-    generator.any_platforms
-
-    assert_size('universal/Icon@1x.png', [1024 / 3, 1024 / 3])
-    assert_size('universal/Icon@2x.png', [1024 / 3 * 2, 1024 / 3 * 2])
-    assert_size('universal/Icon@3x.png', [1024, 1024])
 
     assert_size('icns.iconset/icon_16x16.png', [16, 16])
     assert_size('icns.iconset/icon_16x16@2x.png', [32, 32])
@@ -58,6 +48,16 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     assert_size('favicon/icon_16x16.png', [16, 16])
 
     expect(File.exist?("#{output_dir}Icon.icns")).to be true if RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+  end
+
+  it 'any_platforms' do
+    generator = Appiconset::Generator.new
+    generator.config(input_1024_image, output_dir)
+    generator.any_platforms
+
+    assert_size('universal/Icon@1x.png', [1024 / 3, 1024 / 3])
+    assert_size('universal/Icon@2x.png', [1024 / 3 * 2, 1024 / 3 * 2])
+    assert_size('universal/Icon@3x.png', [1024, 1024])
   end
 
   it 'tvos_platforms' do

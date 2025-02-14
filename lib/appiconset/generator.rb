@@ -32,8 +32,6 @@ module Appiconset
     def square_platforms
       return unless size_match?([1024, 1024])
 
-      show_info('square')
-
       json_dir = "#{__dir__}/settings/*.json"
 
       Dir.glob(json_dir).each do |path|
@@ -44,8 +42,9 @@ module Appiconset
         # プラットフォームごとのディレクトリ
         platform = File.basename(path).gsub('-Contents.json', '')
         output_dir = "#{@output}#{platform}/"
-
         FileUtils.mkdir_p(output_dir)
+
+        show_info(platform)
 
         json_data['images'].each do |image|
           size = image['size'].match(/(.*?)x/)[1].to_f
@@ -66,12 +65,20 @@ module Appiconset
         rescue StandardError
           # none
         end
+
+        if platform == 'icns.iconset' && RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+          # macOSで実行可能
+          system("iconutil -c icns --output #{output_dir}/Icon.icns #{output_dir}/")
+        elsif platform == 'favicon'
+          images = Dir.glob("#{output_dir}*")
+          image = Magick::ImageList.new(*images)
+          image.format = 'ICO'
+          image.write("#{output_dir}favicon.ico")
+        end
       end
     end
 
-    # rubocop:todo Metrics/PerceivedComplexity
-    # rubocop:todo Metrics/AbcSize
-    def any_platforms # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+    def any_platforms
       platforms = [
         {
           name: 'universal',
@@ -105,37 +112,6 @@ module Appiconset
             { width: 4640, height: 1440, name: 'Icon@2x.png' },
             { width: 2320, height: 720, name: 'Icon@1x.png' }
           ]
-        },
-        {
-          name: 'icns.iconset',
-          size: [1024, 1024],
-          contents: [
-            { width: 1024, height: 1024, name: 'icon_512x512@2x.png' },
-            { width: 512, height: 512, name: 'icon_512x512.png' },
-            { width: 512, height: 512, name: 'icon_256x256@2x.png' },
-            { width: 256, height: 256, name: 'icon_256x256.png' },
-            { width: 256, height: 256, name: 'icon_128x128@2x.png' },
-            { width: 128, height: 128, name: 'icon_128x128.png' },
-            { width: 128, height: 128, name: 'icon_64x64@2x.png' },
-            { width: 64, height: 64, name: 'icon_64x64.png' },
-            { width: 64, height: 64, name: 'icon_32x32@2x.png' },
-            { width: 32, height: 32, name: 'icon_32x32.png' },
-            { width: 32, height: 32, name: 'icon_16x16@2x.png' },
-            { width: 16, height: 16, name: 'icon_16x16.png' }
-          ]
-        },
-        {
-          name: 'favicon',
-          size: [1024, 1024],
-          contents: [
-            { width: 256, height: 256, name: 'icon_256x256.png' },
-            { width: 128, height: 128, name: 'icon_128x128.png' },
-            { width: 64, height: 64, name: 'icon_64x64.png' },
-            { width: 48, height: 48, name: 'icon_48x48.png' },
-            { width: 32, height: 32, name: 'icon_32x32.png' },
-            { width: 24, height: 24, name: 'icon_24x24.png' },
-            { width: 16, height: 16, name: 'icon_16x16.png' }
-          ]
         }
       ]
 
@@ -163,26 +139,8 @@ module Appiconset
           image.format = 'PNG'
           image.write(output_dir + name)
         end
-
-        if platform_name == 'icns.iconset' && RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
-          # macOSで実行可能
-          show_info('icns')
-          system("iconutil -c icns --output #{@output}Icon.icns #{@output}icns.iconset/")
-        elsif platform_name == 'favicon'
-          images = platforms.find do |x|
-            x[:name] == 'favicon'
-          end[:contents].map do |x| # rubocop:disable Style/MultilineBlockChain
-            "#{output_dir}#{x[:name]}"
-          end
-
-          image = Magick::ImageList.new(*images)
-          image.format = 'ICO'
-          image.write("#{@output}favicon/favicon.ico")
-        end
       end
     end
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/PerceivedComplexity
 
     private
 
