@@ -1,0 +1,39 @@
+{
+  "images": [
+    {
+      "size": "256x256",
+      "filename": "icon_256x256.png",
+      "scale": "1x"
+    },
+    {
+      "size": "128x128",
+      "filename": "icon_128x128.png",
+      "scale": "1x"
+    },
+    {
+      "size": "64x64",
+      "filename": "icon_64x64.png",
+      "scale": "1x"
+    },
+    {
+      "size": "48x48",
+      "filename": "icon_48x48.png",
+      "scale": "1x"
+    },
+    {
+      "size": "32x32",
+      "filename": "icon_32x32.png",
+      "scale": "1x"
+    },
+    {
+      "size": "24x24",
+      "filename": "icon_24x24.png",
+      "scale": "1x"
+    },
+    {
+      "size": "16x16",
+      "filename": "icon_16x16.png",
+      "scale": "1x"
+    }
+  ]
+}
