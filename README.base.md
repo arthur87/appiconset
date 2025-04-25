@@ -52,6 +52,7 @@ tvOSアプリ向けのアイコンを作成するには。4640px x 1440px の画
 | ディレクトリの名前 | サイズ | 画像 |
 |--|--|--|
 | tv | 400x1440 | ![tv](sample/tv/Icon@2x.png) |
+| tv-appstore | 1280x768 | ![tv-appstore](sample/tv-appstore/Icon@1x.png) |
 | tv-top-shelf | 3840x1440 | ![tv-top-shelf](sample/tv-top-shelf/Icon@2x.png)|
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
@@ -106,6 +107,7 @@ The input image is the same as tv-top-shelf-wide, tv-top-shelf is the image from
 | Directory name | Size | Image |
 |--|--|--|
 | tv | 400x1440 | ![tv](sample/tv/Icon@2x.png) |
+| tv-appstore | 1280x768 | ![tv-appstore](sample/tv-appstore/Icon@1x.png) |
 | tv-top-shelf | 3840x1440 | ![tv-top-shelf](sample/tv-top-shelf/Icon@2x.png)|
 | tv-top-shelf-wide | 4640x1440 |![tv-top-shelf-wide](sample/tv-top-shelf-wide/Icon@2x.png) |
 
