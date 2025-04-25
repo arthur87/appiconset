@@ -73,6 +73,8 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
 
     assert_size('tv-top-shelf-wide/Icon@1x.png', [2320, 720])
     assert_size('tv-top-shelf-wide/Icon@2x.png', [4640, 1440])
+
+    assert_size('tv-appstore/Icon@1x.png', [1280, 768])
   end
 
   private
