@@ -117,7 +117,8 @@ module Appiconset
           name: 'tv-appstore',
           size: [4640, 1440],
           contents: [
-            { width: 1280, height: 768, name: 'Icon@1x.png' }
+            { width: 1280, height: 768, name: 'Icon@1x.png' },
+            { width: 1024, height: 1024, name: 'Icon-1024@1x.png' }
           ]
         }
       ]
