@@ -47,7 +47,9 @@ RSpec.describe Appiconset::Generator do # rubocop:disable Metrics/BlockLength
     assert_size('favicon/icon_24x24.png', [24, 24])
     assert_size('favicon/icon_16x16.png', [16, 16])
 
-    expect(File.exist?("#{output_dir}Icon.icns")).to be true if RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+    if RbConfig::CONFIG['host_os'].match(/darwin|mac os/)
+      expect(File.exist?("#{output_dir}icns.iconset/Icon.icns")).to be true
+    end
   end
 
   it 'any_platforms' do
