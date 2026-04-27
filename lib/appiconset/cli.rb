@@ -32,5 +32,10 @@ module Appiconset
         exit(1)
       end
     end
+
+    def help
+      super
+      puts 'Online documentation: https://github.com/arthur87/appiconset'
+    end
   end
 end
